@@ -1,22 +1,25 @@
 'use strict';
-const YOUTUBE_SEARCH_URL = 'https://www.googleapis.com/youtube/v3/search';
+const GITHUB_SEARCH_URL = 'https://www.googleapis.com/youtube/v3/search';
 
-function getDataFromApi(searchWord, callback){
+function getDataFromApi(searchTerm, callback) {
   const query = {
     part: 'snippet',
     key: 'AIzaSyC9NYtV2Dup8S78zqCQ3x1dPjazLRcVIAo',
-    q: `${searchWord}`
-  };
-  $.getJSON(YOUTUBE_SEARCH_URL, query, callback);
+    q: `${searchTerm}`
+    //per_page: 5
+  }
+  $.getJSON(GITHUB_SEARCH_URL, query, callback);
 }
+
 function renderResult(result) {
   return `
     <div>
-    <img src='${result.snippet.thumbnails.medium.url}'/>
-    // console.log('${result.snippet.thumbnails.medium.url}')
+      <h2>
+      <img src=${result.snippet.thumbnails.medium.url}>
     </div>
   `;
 }
+
 function displayYoutubeSearchData(data) {
   const results = data.items.map((item, index) => renderResult(item));
   $('.js-search-results').html(results);
@@ -32,4 +35,5 @@ function watchSubmit() {
     getDataFromApi(query, displayYoutubeSearchData);
   });
 }
+
 $(watchSubmit);
